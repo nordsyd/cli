@@ -18,44 +18,44 @@ jobs:
           go-version: "^1.14.7"
       - name: Build for Linux (amd64)
         env:
-          GOOS=linux
-          GOARCH=amd64
+          GOOS: linux
+          GOARCH: amd64
         run: go build -o ./nordsyd-linux-amd64 main.go
 
       - name: Build for Linux (386)
         env:
-          GOOS=linux
-          GOARCH=386
+          GOOS: linux
+          GOARCH: 386
         run: go build -o ./nordsyd-linux-386 main.go
 
       - name: Build for macOS (amd64)
         env:
-          GOOS=darwin
-          GOARCH=amd64
+          GOOS: darwin
+          GOARCH: amd64
         run: go build -o ./nordsyd-darwin-amd64 main.go
 
       - name: Build for macOS (386)
         env:
-          GOOS=darwin
-          GOARCH=386
+          GOOS: darwin
+          GOARCH: 386
         run: go build -o ./nordsyd-darwin-386 main.go
 
       - name: Build for Windows (amd64)
         env:
-          GOOS=windows
-          GOARCH=amd64
+          GOOS: windows
+          GOARCH: amd64
         run: go build -o ./nordsyd-windows-amd64.exe main.go
 
       - name: Build for Windows (386)
         env:
-          GOOS=windows
-          GOARCH=386
+          GOOS: windows
+          GOARCH: 386
         run: go build -o ./nordsyd-windows-386.exe main.go
 
       - name: Build for Windows (arm)
         env:
-          GOOS=windows
-          GOARCH=arm
+          GOOS: windows
+          GOARCH: arm
         run: go build -o ./nordsyd-windows-arm.exe main.go
 
       - name: Release
