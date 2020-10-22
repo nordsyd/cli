@@ -16,27 +16,60 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: "^1.14.7"
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Build for Linux (amd64)
+        env:
+          GOOS=linux
+          GOARCH=amd64
+        run: go build -o ./nordsyd-linux-amd64 main.go
+
+      - name: Build for Linux (386)
+        env:
+          GOOS=linux
+          GOARCH=386
+        run: go build -o ./nordsyd-linux-386 main.go
+
+      - name: Build for macOS (amd64)
+        env:
+          GOOS=darwin
+          GOARCH=amd64
+        run: go build -o ./nordsyd-darwin-amd64 main.go
+
+      - name: Build for macOS (386)
+        env:
+          GOOS=darwin
+          GOARCH=386
+        run: go build -o ./nordsyd-darwin-386 main.go
+
+      - name: Build for Windows (amd64)
+        env:
+          GOOS=windows
+          GOARCH=amd64
+        run: go build -o ./nordsyd-windows-amd64.exe main.go
+
+      - name: Build for Windows (386)
+        env:
+          GOOS=windows
+          GOARCH=386
+        run: go build -o ./nordsyd-windows-386.exe main.go
+
+      - name: Build for Windows (arm)
+        env:
+          GOOS=windows
+          GOARCH=arm
+        run: go build -o ./nordsyd-windows-arm.exe main.go
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          fail_on_unmatched_files: true
+          prelease: true
+          files: |
+            nordsyd-linux-amd64
+            nordsyd-linux-386
+            nordsyd-darwin-amd64
+            nordsyd-darwin-386
+            nordsyd-windows-amd64.exe
+            nordsyd-windows-386.exe
+            nordsyd-windows-arm.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: true
-      - name: Build for Linux
-        run: |
-          env GOOS=linux GOARCH=amd64
-          go build -o ./nordsyd-linux-amd64 main.go
-      - name: Upload Release Asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./nordsyd-linux-amd64
-          asset_name: nordsyd-linux-amd64
-          asset_content_type: application/octet-stream
