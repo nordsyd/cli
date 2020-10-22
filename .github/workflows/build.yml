@@ -34,12 +34,6 @@ jobs:
           GOARCH: amd64
         run: go build -o ./nordsyd-darwin-amd64 main.go
 
-      - name: Build for macOS (386)
-        env:
-          GOOS: darwin
-          GOARCH: 386
-        run: go build -o ./nordsyd-darwin-386 main.go
-
       - name: Build for Windows (amd64)
         env:
           GOOS: windows
@@ -67,7 +61,6 @@ jobs:
             nordsyd-linux-amd64
             nordsyd-linux-386
             nordsyd-darwin-amd64
-            nordsyd-darwin-386
             nordsyd-windows-amd64.exe
             nordsyd-windows-386.exe
             nordsyd-windows-arm.exe
