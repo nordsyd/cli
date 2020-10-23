@@ -67,7 +67,8 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          prerelease: true
+          fail_on_unmatched_files: true
+          prelease: true
           files: |
             nordsyd-linux-amd64
             nordsyd-linux-386
