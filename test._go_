@@ -1,0 +1,93 @@
+package main
+
+import (
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"fmt"
+	"io"
+	"os"
+	"path/filepath"
+	"strings"
+)
+
+func hashFileMd5(filePath string) (string, error) {
+	var returnMD5String string
+	file, err := os.Open(filePath)
+	if err != nil {
+		return returnMD5String, err
+	}
+	defer file.Close()
+	hash := sha256.New()
+	if _, err := io.Copy(hash, file); err != nil {
+		return returnMD5String, err
+	}
+	hashInBytes := hash.Sum(nil)[:16]
+	returnMD5String = hex.EncodeToString(hashInBytes)
+	return returnMD5String, nil
+
+}
+
+func main() {
+	var files []string
+
+	root := "test"
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		files = append(files, path)
+		return nil
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	var fileList []file
+
+	var totalSize int64
+	var fileCount int
+	var folderCount int
+
+	for _, filePath := range files {
+		fileStat, err := os.Stat(filePath)
+
+		if !fileStat.IsDir() {
+			hash, err := hashFileMd5(filePath)
+
+			if err != nil {
+				panic(err)
+			}
+
+			fileCount++
+
+			totalSize += fileStat.Size()
+
+			fileStruct := file{
+				Key:  strings.Replace(filePath, root, "", 1),
+				Size: fileStat.Size(),
+				Hash: hash,
+			}
+
+			fileList = append(fileList, fileStruct)
+		} else {
+			folderCount++
+		}
+
+		//size := fileStat.Size()
+
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	manifest := manifest{
+		Files:            fileList,
+		HashingAlgorithm: "sha256",
+		FolderCount:      folderCount,
+		FileCount:        fileCount,
+		TotalSize:        totalSize,
+	}
+
+	// Convert to JSON
+	output, _ := json.Marshal(manifest)
+	fmt.Print(string(output))
+}
