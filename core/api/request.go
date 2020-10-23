@@ -1,18 +1,28 @@
 package api
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"net/http"
-	"strings"
+
+	"github.com/spf13/viper"
 )
 
-var apiURL = "https://api.nordsyd.dk"
+var apiURL = "http://localhost:5000"
 
 // Get sends an HTTP GET request to the Nordsyd API
 func Get(url string) (string, error) {
-	response, error := http.Get(apiURL + url)
+	//response, error := http.Get(apiURL + url)
+	client := &http.Client{}
+	req, _ := http.NewRequest("GET", apiURL+url, nil)
+
+	if viper.Get("JWT") != "" {
+		req.Header.Set("Authorization", "Bearer "+viper.Get("JWT").(string))
+	}
+
+	response, error := client.Do(req)
 
 	if error != nil {
 		return "", error
@@ -29,13 +39,18 @@ func Get(url string) (string, error) {
 func Post(url string, payload interface{}) (string, error) {
 	requestString, _ := json.Marshal(payload)
 
-	requestBody := strings.NewReader(string(requestString))
+	// requestBody := strings.NewReader(string(requestString))
 
-	response, error := http.Post(
-		apiURL+url,
-		"application/json; charset=UTF-8",
-		requestBody,
-	)
+	client := &http.Client{}
+	req, _ := http.NewRequest("POST", apiURL+url, bytes.NewBuffer(requestString))
+
+	if viper.Get("JWT") != "" {
+		req.Header.Set("Authorization", "Bearer "+viper.Get("JWT").(string))
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+
+	response, error := client.Do(req)
 
 	if error != nil {
 		return "", error

@@ -43,6 +43,7 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	viper.SetDefault("JWT", "")
+	viper.SetDefault("SiteLinks", map[string]string{})
 }
 
 func initConfig() {

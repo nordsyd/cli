@@ -97,6 +97,10 @@ var authCmd = &cobra.Command{
 
 		green := color.New(color.FgGreen)
 		green.Print("✓ ")
-		whiteBold.Print("Authentication successful!\n")
+		whiteBold.Print("Authentication successful!\n\n")
+
+		fmt.Print("Next up, go to a folder with a static site, and type ")
+		whiteBold.Print("nordsyd link")
+		fmt.Print(" to link a site.\n")
 	},
 }
