@@ -4,11 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
+	"time"
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/AlecAivazis/survey/v2/terminal"
+	"github.com/briandowns/spinner"
 	"github.com/fatih/color"
-	"github.com/janeczku/go-spinner"
 	"github.com/nordsyd/cli/core/api"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -76,8 +77,9 @@ var authCmd = &cobra.Command{
 
 		fmt.Println()
 
-		s := spinner.StartNew("Authenticating...")
-		jwt, error := api.GetJWT(credentials.Email, credentials.Password)
+		s := spinner.New(spinner.CharSets[9], 100*time.Millisecond)       // Build our new spinner
+		s.Start()                                                         // Start the spinner
+		jwt, error := api.GetJWT(credentials.Email, credentials.Password) // Run for some time to simulate work
 		s.Stop()
 
 		if error != nil {
