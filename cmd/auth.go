@@ -77,9 +77,9 @@ var authCmd = &cobra.Command{
 
 		fmt.Println()
 
-		s := spinner.New(spinner.CharSets[9], 100*time.Millisecond)       // Build our new spinner
-		s.Start()                                                         // Start the spinner
-		jwt, error := api.GetJWT(credentials.Email, credentials.Password) // Run for some time to simulate work
+		s := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
+		s.Start()
+		jwt, error := api.GetJWT(credentials.Email, credentials.Password)
 		s.Stop()
 
 		if error != nil {

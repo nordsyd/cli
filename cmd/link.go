@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/nordsyd/cli/core/cli"
+
 	"github.com/fatih/color"
 	"github.com/spf13/viper"
 
@@ -62,6 +64,10 @@ var linkCmd = &cobra.Command{
 	Short: "Links a local site to Nordsyd site",
 	Long:  `Links a local site to Nordsyd site, such that the CLI deploys to the correct site`,
 	Run: func(cmd *cobra.Command, args []string) {
+		if !cli.EnsureAuthentication() {
+			return
+		}
+
 		currentDirectory := getCurrentDirectory()
 		siteLink := getSiteLink(currentDirectory)
 

@@ -14,7 +14,7 @@ var ErrorCodes = map[string]ErrorCode{
 	},
 	"NORDSYD_API_NOT_WORKING": ErrorCode{
 		998,
-		"The Nordsyd API is currently expericencing issue. Please try again later.",
+		"The Nordsyd API is currently expericencing issues. Please try again later.",
 	},
 	"UNKNOWN_ERROR_CODE": ErrorCode{
 		999,
