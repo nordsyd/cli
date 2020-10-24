@@ -71,7 +71,7 @@ var linkCmd = &cobra.Command{
 		currentDirectory := getCurrentDirectory()
 		siteLink := getSiteLink(currentDirectory)
 
-		override := false
+		override := true
 
 		white := color.New(color.FgWhite).Add(color.Bold)
 
