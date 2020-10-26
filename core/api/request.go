@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-var apiURL = "http://localhost:5000"
+var apiURL = "https://api.nordsyd.dk"
 
 // Get sends an HTTP GET request to the Nordsyd API
 func Get(url string) (string, error) {
